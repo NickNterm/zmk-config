@@ -39,7 +39,7 @@ RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5) RC(4,5) RC(4,6) RC(3,6) RC(3,7) 
         diode-direction = "col2row";
         row-gpios
             = <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&gpi1 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             , <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             , <&pro_micro 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
@@ -123,6 +123,44 @@ RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5) RC(4,5) RC(4,6) RC(3,6) RC(3,7) 
 	};
 };
 
+&spi3 {
+	compatible = "nordic,nrf-spim";
+	status = "okay";
 
+	pinctrl-0 = <&spi3_default>;
+	pinctrl-1 = <&spi3_sleep>;
+	pinctrl-names = "default", "sleep";
+
+
+    backlight_leds: ws2812_backlight@6 {
+        compatible = "worldsemi,ws2812-spi";
+        label = "BACKLIGHT";
+        reg = <6>;                   /* start index in the chain */
+        spi-max-frequency = <4000000>;
+        chain-length = <30>;          /* 36 total - 6 underglow = 30 LEDs */
+        spi-one-frame = <0x70>;
+        spi-zero-frame = <0x40>;
+        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
+    };
+
+    /* UNDERGLOW LEDs */
+    underglow_leds: ws2812_underglow@0 {
+        compatible = "worldsemi,ws2812-spi";
+        label = "UNDERGLOW";
+        reg = <0>;                    /* start index */
+        spi-max-frequency = <4000000>;
+        chain-length = <6>;            /* first 6 LEDs */
+        spi-one-frame = <0x70>;
+        spi-zero-frame = <0x40>;
+        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
+    };
+};
+
+/ {
+	chosen {
+       zmk,backlight = &backlight_leds;
+       zmk,underglow = &underglow_leds;
+	};
+};
 
 
