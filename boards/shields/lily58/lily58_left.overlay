@@ -20,15 +20,6 @@
 &left_encoder {
     status = "okay";
 };
-/ {
-    chosen {
-      zmk,battery = &vbatt;
-    };
-
-    vbatt: vbatt {
-        compatible = "zmk,battery-nrf-vddh";
-    };
-};
 
 &spi3 {
 	compatible = "nordic,nrf-spim";
@@ -63,8 +54,14 @@
 };
 
 / {
-	chosen {
-       zmk,backlight = &backlight_leds;
-       zmk,underglow = &underglow_leds;
-	};
+    chosen {
+      zmk,battery = &vbatt;
+      zmk,backlight = &backlight_leds;
+      zmk,underglow = &underglow_leds;
+    };
+
+    vbatt: vbatt {
+        compatible = "zmk,battery-nrf-vddh";
+    };
 };
+
