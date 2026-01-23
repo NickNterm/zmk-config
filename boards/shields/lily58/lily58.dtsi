@@ -138,8 +138,9 @@ RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5) RC(4,5) RC(4,6) RC(3,6) RC(3,7) 
         compatible = "worldsemi,ws2812-spi";
         label = "UNDERGLOW";
         reg = <0>;                    /* start index */
+        status = "okay";
         spi-max-frequency = <4000000>;
-        chain-length = <6>;           /* total underglow LEDs */
+        chain-length = <6>;           /* total underglow LEDs - MUST MATCH PHYSICAL COUNT */
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
         color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
