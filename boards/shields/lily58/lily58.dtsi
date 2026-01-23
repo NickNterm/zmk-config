@@ -12,7 +12,6 @@
         zephyr,display = &oled;
         zmk,kscan = &kscan0;
         zmk,physical-layout = &layout_0;
-        zmk,backlight = &backlight_leds;
         zmk,underglow = &underglow_leds;
     };
 
@@ -134,25 +133,13 @@ RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5) RC(4,5) RC(4,6) RC(3,6) RC(3,7) 
 	pinctrl-1 = <&spi3_sleep>;
 	pinctrl-names = "default", "sleep";
 
-
-    backlight_leds: ws2812_backlight@6 {
-        compatible = "worldsemi,ws2812-spi";
-        label = "BACKLIGHT";
-        reg = <6>;                   /* start index in the chain */
-        spi-max-frequency = <4000000>;
-        chain-length = <30>;          /* 36 total - 6 underglow = 30 LEDs */
-        spi-one-frame = <0x70>;
-        spi-zero-frame = <0x40>;
-        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
-    };
-
     /* UNDERGLOW LEDs */
     underglow_leds: ws2812_underglow@0 {
         compatible = "worldsemi,ws2812-spi";
         label = "UNDERGLOW";
         reg = <0>;                    /* start index */
         spi-max-frequency = <4000000>;
-        chain-length = <6>;            /* first 6 LEDs */
+        chain-length = <6>;           /* total underglow LEDs */
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
         color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
